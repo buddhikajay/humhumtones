@@ -36,9 +36,10 @@ export function MidiStatus({ state }: { state: MidiState }) {
       break;
     case "ready":
       content = state.devices.length ? (
-        <span className="flex items-center gap-2">
+        // Controllers often expose several ports (MiniLab 3 has four); name only the first.
+        <span className="flex items-center gap-2" title={state.devices.join(", ")}>
           <span className="size-2 rounded-full bg-emerald-500" aria-hidden />
-          {state.devices.join(", ")}
+          {state.devices[0]} connected
         </span>
       ) : (
         "MIDI enabled. Plug in a keyboard."
