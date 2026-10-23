@@ -1,38 +1,78 @@
 # HumHumTones
 
-Ear training for musical notes. A note plays, you name it on the on-screen piano (or with your keyboard), and your progress is tracked per note.
+**Hear it. Name the note.**
 
-Frontend only: Next.js with `output: "export"`, notes synthesized with the Web Audio API, progress saved in `localStorage`.
+HumHumTones is an ear-training web app that teaches you to recognize musical notes by sound. It plays a note, you name it on a piano, and over time you learn to tell a C from a D, or an F♯ from a G, just by listening.
 
-## Develop
+It runs entirely in your browser: nothing to install, no account, no server.
+
+## What it does
+
+### The training loop
+
+1. Press **Start** (or `Space`). A mystery note plays.
+2. Answer by clicking the on-screen piano, typing a keyboard shortcut, or playing a key on a MIDI keyboard.
+3. You get instant feedback:
+   - **Correct:** the key lights up green and the next note follows.
+   - **Wrong:** your pick lights up red, the right key green, and you hear your pick followed by the correct note so you can compare them.
+4. Repeat. Your score, accuracy and streak update as you go.
+
+### Two ways to train
+
+- **With reference (default):** a C plays first, then the mystery note. You learn to judge each note's distance from C. This is *relative pitch*, the skill most musicians rely on, and the easiest place to start.
+- **Absolute:** only the mystery note plays, with no anchor. This is the harder *absolute pitch* challenge.
+
+### Difficulty levels
+
+| Level | Notes | Range |
+|---|---|---|
+| Beginner | White keys only (C D E F G A B) | One octave |
+| Intermediate | All 12 notes, including sharps/flats | One octave |
+| Advanced | All 12 notes | Three octaves (any octave counts as correct) |
+
+You can also pick exactly which notes are in play, for example only C, E and G while you learn them.
+
+### Practice that adapts to you
+
+- **Focuses on your weak spots:** notes you get wrong more often come up more often, so practice time goes where you need it.
+- **Tracks your progress:** the **Stats** page shows your accuracy for each note and your most common mix-ups (e.g. "heard E, answered D"). Progress is saved in your browser.
+
+### Other options
+
+- **Hold note until answered:** keeps the mystery note sounding so you can listen as long as you need.
+- **Key labels:** show or hide the note names on the piano. Hide them once you know the keyboard.
+- **Auto-advance:** move to the next note automatically, or step through at your own pace.
+- **Volume** control.
+
+### Use a real keyboard (MIDI)
+
+Plug in a USB MIDI keyboard (e.g. an Arturia MiniLab 3), click **Connect MIDI keyboard**, and answer by playing the actual note. This works in Chrome and Edge. Keys in any octave count, and drum pads (MIDI channel 10) are ignored. Between questions, the keyboard just plays notes so you can explore.
+
+### Keyboard shortcuts
+
+| Key | Action |
+|---|---|
+| `Space` | Play / replay the note (or start the next one) |
+| `A W S E D F T G Y H U J` | Answer C, C♯, D … B (laid out like a piano) |
+| `Enter` | Next note |
+
+## Development
+
+Built with Next.js as a fully static site. Notes are synthesized with the Web Audio API (no audio files), settings and stats live in `localStorage`, and MIDI input uses the Web MIDI API.
 
 ```bash
 npm install
-npm run dev
-```
-
-## Build & deploy
-
-```bash
+npm run dev     # http://localhost:3000
 npm run build   # static site in out/
 ```
 
-Upload `out/` to any static host (GitHub Pages, Netlify, Cloudflare Pages, S3…).
+Deploy by uploading `out/` to any static host (Cloudflare Pages, Netlify, GitHub Pages, S3…). MIDI requires HTTPS, which these hosts provide.
 
-## How it works
-
-- **Modes:** *With reference* plays a C first, then the mystery note (relative pitch). *Absolute* plays only the mystery note.
-- **Difficulty:** Beginner (white keys, 1 octave) · Intermediate (12 notes, 1 octave) · Advanced (12 notes, 3 octaves). You can toggle individual notes in Settings.
-- **Hold note until answered:** optional setting that sustains the mystery note until you answer (or replay / skip).
-- **Adaptive:** notes you miss more often are asked more often (`src/lib/quiz.ts`).
-- **MIDI keyboard:** click "Connect MIDI keyboard" (Chrome/Edge, via Web MIDI). Any key answers by pitch class, in any octave. Channel 10 (drum pads) is ignored.
-- **Shortcuts:** `Space` play/replay · `A W S E D F T G Y H U J` answer C…B · `Enter` next.
-
-## Layout
+### Project layout
 
 ```
 src/app/            page.tsx (trainer), stats/page.tsx, layout.tsx
-src/components/     Trainer, PianoKeyboard, ScoreBoard, SettingsPanel
-src/hooks/          useQuiz, usePersistentStore
-src/lib/            audio (synth), notes (theory), quiz (picking), settings, stats, storage
+src/components/     Trainer, PianoKeyboard, ScoreBoard, SettingsPanel, MidiStatus
+src/hooks/          useQuiz, useMidiInput, usePersistentStore
+src/lib/            audio (synth), notes (theory), quiz (adaptive picking), midi, settings, stats, storage
 ```
