@@ -22,4 +22,4 @@ export const DEFAULT_SETTINGS: Settings = {
   volume: 0.8,
 };
 
-export const settingsStore = createPersistentStore<Settings>("notestrained:settings", DEFAULT_SETTINGS);
+export const settingsStore = createPersistentStore<Settings>("humhumtones:settings", DEFAULT_SETTINGS);

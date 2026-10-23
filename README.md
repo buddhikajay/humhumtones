@@ -1,4 +1,4 @@
-# NotesTrained
+# HumHumTones
 
 Ear training for musical notes. A note plays, you name it on the on-screen piano (or with your keyboard), and your progress is tracked per note.
 

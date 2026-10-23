@@ -12,7 +12,7 @@ export type Stats = {
 
 export const EMPTY_STATS: Stats = { notes: {}, confusions: {}, bestStreak: 0 };
 
-export const statsStore = createPersistentStore<Stats>("notestrained:stats", EMPTY_STATS);
+export const statsStore = createPersistentStore<Stats>("humhumtones:stats", EMPTY_STATS);
 
 export function recordAnswer(target: number, guess: number, streak: number) {
   statsStore.set((stats) => {
