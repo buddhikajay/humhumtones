@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
+import icon from "@/assets/icon.png";
 import { usePersistentStore } from "@/hooks/usePersistentStore";
 import { ALL_PITCH_CLASSES, noteLabel } from "@/lib/notes";
 import { resetStats, statsStore } from "@/lib/stats";
@@ -51,6 +53,8 @@ export default function StatsPage() {
           </button>
         )}
       </div>
+
+      {totals.attempts === 0 && <Image src={icon} alt="" className="mx-auto h-24 w-auto opacity-90" />}
 
       <section className="space-y-2">
         <h2 className="font-semibold">Accuracy by note</h2>

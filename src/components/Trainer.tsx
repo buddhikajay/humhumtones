@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useEffectEvent } from "react";
+import mascot from "@/assets/mascot.png";
 import { useMidiInput } from "@/hooks/useMidiInput";
 import { useQuiz } from "@/hooks/useQuiz";
 import { usePersistentStore } from "@/hooks/usePersistentStore";
@@ -80,6 +82,7 @@ export function Trainer({ settings }: { settings: Settings }) {
       <ScoreBoard session={session} bestStreak={stats.bestStreak} />
 
       <div className="flex flex-col items-center gap-4 py-2">
+        {phase === "idle" && <Image src={mascot} alt="" priority className="h-28 w-auto" />}
         <p className="min-h-7 text-center text-lg" aria-live="polite">
           {prompt}
         </p>
